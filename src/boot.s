@@ -18,6 +18,9 @@
     heap_bottom:
         .skip 16384
     heap_top:
+        .skip 32
+    interrupt:
+        .skip 32
 
     .section .text
     .global _start

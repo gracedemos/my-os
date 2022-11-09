@@ -1,7 +1,8 @@
 #include <kernel/kernel.h>
+#include <libcpp/libcpp.h>
 
 void handleEvent() {
-
+    char* interrupt = reinterpret_cast<char*>(INTERRUPT);
 }
 
 extern "C" void kernelMain(void* heapBottom) {
@@ -10,23 +11,15 @@ extern "C" void kernelMain(void* heapBottom) {
 
     Terminal terminal;
 
-    char* message = static_cast<char*>(memoryManager.allocateMemory(4));
-    message[0] = 'a';
-    message[1] = 'b';
-    message[2] = '\n';
-    message[3] = '\x00';
+    char* msg = static_cast<char*>(memoryManager.allocateMemory(4));
+    msg[0] = 'b';
+    msg[1] = 'o';
+    msg[2] = 'b';
+    msg[3] = '\x00';
 
-    char* msg2 = static_cast<char*>(memoryManager.allocateMemory(5));
-    msg2[0] = 'h';
-    msg2[1] = 'e';
-    msg2[2] = 'h';
-    msg2[3] = 'e';
-    msg2[4] = '\x00';
-
-    terminal.writeString(message);
-    terminal.writeString(msg2);
+    terminal.writeString(msg);
 
     while(true) {
-        
+        handleEvent();
     }
 }
