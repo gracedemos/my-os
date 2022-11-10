@@ -2,6 +2,8 @@
 #include <libcpp/libcpp.h>
 #include <main.h>
 
+Kernel* KERNEL;
+
 Kernel::Kernel(MemoryManager* initMemoryManager, Terminal* initTerminal) {
     memoryManager = initMemoryManager;
     terminal = initTerminal;
@@ -16,7 +18,7 @@ Terminal* Kernel::getTerminal() {
 }
 
 Kernel* getKernel() {
-    return reinterpret_cast<Kernel*>(0x108050);
+    return KERNEL;
 }
 
 extern "C" void kernelMain(void* heapBottom, void* kernelPtr) {
@@ -24,8 +26,8 @@ extern "C" void kernelMain(void* heapBottom, void* kernelPtr) {
     MemoryManager memoryManager(heapBottom, pages);
     Terminal terminal;
 
-    Kernel* kernel = static_cast<Kernel*>(kernelPtr);
-    *kernel = Kernel(&memoryManager, &terminal);
+    KERNEL = static_cast<Kernel*>(kernelPtr);
+    *KERNEL = Kernel(&memoryManager, &terminal);
 
     main();
 
