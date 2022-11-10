@@ -6,8 +6,9 @@ i686-elf-g++ src/libcpp.cpp -c -I include -o build/libcpp.o -ffreestanding -fno-
 i686-elf-g++ src/terminal.cpp -c -I include -o build/terminal.o -ffreestanding -fno-rtti -g
 i686-elf-g++ src/string.cpp -c -I include -o build/string.o -ffreestanding -fno-rtti -g
 i686-elf-g++ src/memory.cpp -c -I include -o build/memory.o -ffreestanding -fno-rtti -g
+i686-elf-g++ src/main.cpp -c -I include -o build/main.o -ffreestanding -fno-rtti -g
 
-i686-elf-g++ -T linker.ld -o build/my-os.bin -ffreestanding -nostdlib build/boot.o build/libcpp.o build/kernel.o build/terminal.o build/string.o build/memory.o -lgcc
+i686-elf-g++ -T linker.ld -o build/my-os.bin -ffreestanding -nostdlib build/boot.o build/libcpp.o build/kernel.o build/terminal.o build/string.o build/memory.o build/main.o -lgcc
 
 cp build/my-os.bin isodir/boot/my-os.bin
 grub-mkrescue -o build/my-os.iso isodir 

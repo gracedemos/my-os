@@ -1,25 +1,33 @@
 #include <kernel/kernel.h>
 #include <libcpp/libcpp.h>
+#include <main.h>
 
-void handleEvent() {
-    char* interrupt = reinterpret_cast<char*>(INTERRUPT);
+Kernel::Kernel(MemoryManager* initMemoryManager, Terminal* initTerminal) {
+    memoryManager = initMemoryManager;
+    terminal = initTerminal;
 }
 
-extern "C" void kernelMain(void* heapBottom) {
+MemoryManager* Kernel::getMemoryManager() {
+    return memoryManager;
+}
+
+Terminal* Kernel::getTerminal() {
+    return terminal;
+}
+
+Kernel* getKernel() {
+    return reinterpret_cast<Kernel*>(0x108050);
+}
+
+extern "C" void kernelMain(void* heapBottom, void* kernelPtr) {
     Page pages[1024] = {};
     MemoryManager memoryManager(heapBottom, pages);
-
     Terminal terminal;
 
-    char* msg = static_cast<char*>(memoryManager.allocateMemory(4));
-    msg[0] = 'b';
-    msg[1] = 'o';
-    msg[2] = 'b';
-    msg[3] = '\x00';
+    Kernel* kernel = static_cast<Kernel*>(kernelPtr);
+    *kernel = Kernel(&memoryManager, &terminal);
 
-    terminal.writeString(msg);
+    main();
 
-    while(true) {
-        handleEvent();
-    }
+    while(true);
 }

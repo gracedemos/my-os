@@ -19,14 +19,15 @@
         .skip 16384
     heap_top:
         .skip 32
-    interrupt:
-        .skip 32
+    kernel:
+        .skip 128
 
     .section .text
     .global _start
 
     _start:
         mov $stack_top, %esp
+        push $kernel
         push $heap_bottom
         call kernelMain
 
