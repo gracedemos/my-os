@@ -2,6 +2,8 @@
     #include <libcpp/libcpp.h>
 #endif
 
+#define KERNEL_MEM
+
 struct Page {
     size_t size;
     void* pointer;
